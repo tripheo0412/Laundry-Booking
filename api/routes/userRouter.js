@@ -6,9 +6,11 @@ const userController = require("../controllers/")
 router.get("/user", (req, res) => {
   const { email } = req.body
   userController
-    .user_get_information(email)
+    .user_find_one(email)
     .then(res => {
       res.send(res)
     })
     .catch(err => console.log(err))
 })
+
+
