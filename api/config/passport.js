@@ -6,10 +6,6 @@ const JWTStrategy = passportJWT.Strategy
 const ExtractJWT = passportJWT.ExtractJwt
 const userController = require("../controllers/userController")
 const secret = process.env.SECRET
-const opts = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: secret
-};
 //Login strategy
 passport.use(
   new LocalStrategy(
@@ -34,12 +30,12 @@ passport.use(
 //Protected route
 passport.use(new JWTStrategy({
     jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-    secretOrKey   : 'your_jwt_secret'
+    secretOrKey   : secret
 },
 (jwtPayload, cb) => {
 
     //find the user in db if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
-    return UserModel.findOneById(jwtPayload.id)
+    return userController.user_find_one_id(jwtPayload.id)
         .then(user => {
             return cb(null, user);
         })

@@ -11,3 +11,13 @@ exports.user_find_one = (email) => {
         return err
     })
 }
+
+exports.user_find_one_id = (id) => {
+    user.findById(id)
+    .then(user => {
+        return user
+    })
+    .catch(err => {
+        return err
+    })
+}
