@@ -5,6 +5,11 @@ const passportJWT = require("passport-jwt")
 const JWTStrategy = passportJWT.Strategy
 const ExtractJWT = passportJWT.ExtractJwt
 const userController = require("../controllers/userController")
+const secret = process.env.SECRET
+const opts = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: secret
+};
 //Login strategy
 passport.use(
   new LocalStrategy(
@@ -14,7 +19,7 @@ passport.use(
     },
     (email, password, cb) => {
       //this one is typically a DB call. Assume that the returned user object is pre-formatted and ready for storing in JWT
-      return UserModel.findOne({ email, password })
+      return userController.user_find_one({ email, password })
         .then(user => {
           if (!user) {
             return cb(null, false, { message: "Incorrect email or password." })
