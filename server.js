@@ -30,6 +30,6 @@ app.use(bp.json())
 app.get("/", (req, res) => {
   res.send("OK")
 })
-app.use('/user',userRouter)
+app.use('/user',passport.authenticate('jwt',{session:false}),userRouter)
 app.use('/auth',authRouter)
 app.listen(3000)
