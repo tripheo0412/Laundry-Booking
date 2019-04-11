@@ -5,21 +5,14 @@ const BuildingSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  email: {
-    type: String,
-    required: true
+  resident: {
+      type: Array
   },
-  password: {
-    type: String,
-    required: true
+  washer: {
+      type: Array
   },
-  date: {
-    type: Date,
-    default: Date.now
-  },
-  avatar: {
-    type: String,
-    required: true
+  dryer: {
+      type: Array
   }
 })
 
