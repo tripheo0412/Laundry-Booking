@@ -1,6 +1,6 @@
 const express = require("express")
 const router = express.Router()
-const userController = require("../controllers/")
+const userController = require("../controllers/userController")
 
 //Get user information
 router.get("/user", (req, res) => {
@@ -14,3 +14,4 @@ router.get("/user", (req, res) => {
 })
 
 
+module.exports = router

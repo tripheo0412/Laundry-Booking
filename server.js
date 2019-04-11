@@ -1,6 +1,11 @@
 require("dotenv").config()
 const express = require("express")
 const mongoose = require("mongoose")
+const cp = require("cookie-parser")
+const bp = require("body-parser")
+const passport = require("passport")
+const userRouter = require("./api/routes/userRouter")
+const authRouter = require("./api/routes/authRouter")
 
 mongoose
   .connect(
@@ -14,8 +19,17 @@ mongoose
 
 const app = express()
 
+app.use(passport.initialize())
+require("./api/config/passport")(passport)
+
+app.use(cp())
+app.use(bp.urlencoded({extended: false}))
+app.use(bp.json())
+
+
 app.get("/", (req, res) => {
   res.send("OK")
 })
-
+app.use('/user',userRouter)
+app.use('/auth',authRouter)
 app.listen(3000)

@@ -7,31 +7,42 @@ const ExtractJWT = passportJWT.ExtractJwt
 const userController = require("../controllers/userController")
 const secret = process.env.SECRET
 //Login strategy
-passport.use(
-  new LocalStrategy(
-    {
-      usernameField: "email",
-      passwordField: "password"
-    },
-    (email, password, cb) => {
-      //this one is typically a DB call. Assume that the returned user object is pre-formatted and ready for storing in JWT
-      return userController
-        .user_find_one(email)
-        .then(user => {
-          // Match password
-          bcrypt.compare(password, user.password, (err, isMatch) => {
-            if (err) throw err
-            if (isMatch) {
-              return cb(null, user)
-            } else {
-              return cb(null, false, { message: "Password incorrect" })
-            }
+module.exports = passport => {
+  passport.use(
+    new LocalStrategy(
+      {
+        usernameField: "email",
+        passwordField: "password"
+      },
+      (email, password, cb) => {
+        //this one is typically a DB call. Assume that the returned user object is pre-formatted and ready for storing in JWT
+        return userController
+          .user_find_one_email(email)
+          .then(user => {
+            // Match password
+            bcrypt.compare(password, user.password, (err, isMatch) => {
+              if (err) throw err
+              if (isMatch) {
+                return cb(null, user)
+              } else {
+                return cb(null, false, { message: "Password incorrect" })
+              }
+            })
           })
-        })
-        .catch(err => cb(err))
-    }
+          .catch(err => cb(err))
+      }
+    )
   )
-)
+  passport.serializeUser((user, done) => {
+    done(null, user.id)
+  })
+
+  passport.deserializeUser((id, done) => {
+    userController.user_find_one_id(id, (err, user) => {
+      done(err, user)
+    })
+  })
+}
 
 //Protected route
 passport.use(
@@ -55,12 +66,3 @@ passport.use(
 )
 
 //
-passport.serializeUser((user, done) => {
-  done(null, user.id)
-})
-
-passport.deserializeUser((id, done) => {
-  userController.user_find_one_id(id, (err, user) => {
-    done(err, user)
-  })
-})
