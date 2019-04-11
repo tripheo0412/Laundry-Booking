@@ -17,4 +17,4 @@ const MachineSchema = new mongoose.Schema({
 
 const Machines = mongoose.model("Machines", MachineSchema)
 
-module.exports = Machine
+module.exports = Machines
