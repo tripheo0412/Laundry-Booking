@@ -6,25 +6,37 @@ const passport = require("passport")
 const userController = require("../controllers/userController")
 const bcrypt = require("bcrypt")
 const User = require("../models/users")
-
+require('dotenv').config();
+const secret = process.env.SECRET
 //POST login
-router.post("/login", function(req, res, next) {
-  passport.authenticate("local", { session: false }, (err, user, info) => {
-    if (err || !user) {
-      return res.status(400).json({
-        message: "Something is not right",
-        user: user
-      })
+router.post("/login", (req, res) => {
+  const email = req.body.email
+  const password = req.body.password
+  User.findOne( {email: email} ).then(user => {
+    if (!user) {
+      
+      return res.send("no account found")
     }
-    req.login(user, { session: false }, err => {
-      if (err) {
-        res.send(err)
+    bcrypt.compare(password, user.password).then(isMatch => {
+      if (isMatch) {
+        const payload = {
+          id: user._id,
+          name: user.userName
+        }
+        jwt.sign(payload, secret, { expiresIn: 36000 }, (err, token) => {
+          if (err)
+            res.status(500).json({ error: "Error signing token", raw: err })
+          res.json({
+            success: true,
+            token: `Bearer ${token}`
+          })
+        })
+      } else {
+        
+        res.send("Password is incorrect")
       }
-      // generate a signed son web token with the contents of user object and return it in the response
-      const token = jwt.sign(user, process.env.SECRET)
-      return res.json({ user, token })
     })
-  })(req, res)
+  })
 })
 
 //POST Register
@@ -46,53 +58,51 @@ router.post("/register", (req, res) => {
   if (errors.length > 0) {
     res.send(errors)
   } else {
-    const newUser = new User({
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-      avatar: req.body.avatarUrl
-    })
-    bcrypt.genSalt(12, (err, salt) => {
-      if (err) throw err
-      bcrypt.hash(newUser.password, salt, (err, hash) => {
-        if (err) throw err
-        newUser.password = hash
-        newUser
-          .save()
-          .then(user => res.send(user))
-          .catch(err => res.status(400).json(err))
-      })
-    })
-    
-    // userController
-    //   .user_find_one_email(req.body.email)
-    //   .then(user => {
-    //     if (user) {
-    //       let error = "Email Address Exists in Database."
-    //       return res.status(400).json(error)
-    //     } else {
-    //       const newUser = new User({
-    //         name: req.body.name,
-    //         email: req.body.email,
-    //         password: req.body.password,
-    //         avatar: avatarUrl
-    //       })
-    //       bcrypt.genSalt(12, (err, salt) => {
-    //         if (err) throw err
-    //         bcrypt.hash(newUser.password, salt, (err, hash) => {
-    //           if (err) throw err
-    //           newUser.password = hash
-    //           newUser
-    //             .save()
-    //             .then(user => res.send(user))
-    //             .catch(err => res.status(400).json(err))
-    //         })
-    //       })
-    //     }
+    // const newUser = new User({
+    //   name: req.body.name,
+    //   email: req.body.email,
+    //   password: req.body.password,
+    //   avatar: req.body.avatarUrl
+    // })
+    // bcrypt.genSalt(12, (err, salt) => {
+    //   if (err) throw err
+    //   bcrypt.hash(newUser.password, salt, (err, hash) => {
+    //     if (err) throw err
+    //     newUser.password = hash
+    //     newUser
+    //       .save()
+    //       .then(user => res.send(user))
+    //       .catch(err => res.status(400).json(err))
     //   })
-    //   .catch(err => {
-    //     res.send(err)
-    //   })
+    // })
+      User.findOne({email: req.body.email})
+        .then(user => {
+          if (user) {
+            let error = "Email Address Exists in Database."
+            return res.status(400).json(error)
+          } else {
+            const newUser = new User({
+              name: req.body.name,
+              email: req.body.email,
+              password: req.body.password,
+              avatar: avatarUrl
+            })
+            bcrypt.genSalt(12, (err, salt) => {
+              if (err) throw err
+              bcrypt.hash(newUser.password, salt, (err, hash) => {
+                if (err) throw err
+                newUser.password = hash
+                newUser
+                  .save()
+                  .then(user => res.send(user))
+                  .catch(err => res.status(400).json(err))
+              })
+            })
+          }
+        })
+        .catch(err => {
+          res.send(err)
+        })
   }
 })
 
