@@ -1,7 +1,7 @@
 const user = require('../models/users')
 
 exports.user_find_one_email = (email) => {
-    user.findOne({
+    return user.findOne({
         email: email
     })
     .then(user => {
@@ -15,7 +15,7 @@ exports.user_find_one_email = (email) => {
 }
 
 exports.user_find_one_id = (id) => {
-    user.findById(id)
+    return user.findById(id)
     .then(user => {
         return user
     })

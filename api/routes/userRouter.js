@@ -6,12 +6,14 @@ const userController = require("../controllers/userController")
 router.get("/user", (req, res) => {
   const { email } = req.body
   userController
-    .user_find_one(email)
-    .then(res => {
-      res.send(res)
+    .user_find_one_email(email)
+    .then(result => {
+      res.send(result)
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log(err)
+      res.send(err)
+    })
 })
-
 
 module.exports = router

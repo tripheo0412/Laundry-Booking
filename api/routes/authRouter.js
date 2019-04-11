@@ -12,7 +12,7 @@ const secret = process.env.SECRET
 router.post("/login", (req, res) => {
   const email = req.body.email
   const password = req.body.password
-  User.findOne( {email: email} ).then(user => {
+  userController.user_find_one_email(email).then(user => {
     if (!user) {
       
       return res.send("no account found")
@@ -58,24 +58,7 @@ router.post("/register", (req, res) => {
   if (errors.length > 0) {
     res.send(errors)
   } else {
-    // const newUser = new User({
-    //   name: req.body.name,
-    //   email: req.body.email,
-    //   password: req.body.password,
-    //   avatar: req.body.avatarUrl
-    // })
-    // bcrypt.genSalt(12, (err, salt) => {
-    //   if (err) throw err
-    //   bcrypt.hash(newUser.password, salt, (err, hash) => {
-    //     if (err) throw err
-    //     newUser.password = hash
-    //     newUser
-    //       .save()
-    //       .then(user => res.send(user))
-    //       .catch(err => res.status(400).json(err))
-    //   })
-    // })
-      User.findOne({email: req.body.email})
+      userController.user_find_one_email(req.body.email)
         .then(user => {
           if (user) {
             let error = "Email Address Exists in Database."
