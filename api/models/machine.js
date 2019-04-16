@@ -10,7 +10,8 @@ const MachineSchema = new mongoose.Schema({
     required: true
   },
   building: {
-      type: String
+      type: String,
+      required:true
   }
 })
 
