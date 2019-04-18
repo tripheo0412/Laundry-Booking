@@ -3,6 +3,7 @@ const express = require("express")
 const mongoose = require("mongoose")
 const cp = require("cookie-parser")
 const bp = require("body-parser")
+const expressLayouts = require("express-ejs-layouts")
 const passport = require("passport")
 const userRouter = require("./api/routes/userRouter")
 const authRouter = require("./api/routes/authRouter")
@@ -17,8 +18,9 @@ mongoose
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err))
 
-const app = express()
-
+const app = express()// EJS
+app.use(expressLayouts)
+app.set("view engine", "ejs")
 app.use(passport.initialize())
 require("./api/config/passport")(passport)
 
