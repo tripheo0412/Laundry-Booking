@@ -40,7 +40,7 @@ router.post("/login", (req, res) => {
 
 //POST Register
 router.post("/register", (req, res) => {
-  {
+  
       userController.user_find_one_email(req.body.email)
         .then(user => {
           if (user) {
@@ -69,7 +69,7 @@ router.post("/register", (req, res) => {
         .catch(err => {
           res.send(err)
         })
-  }
+  
 })
 
 module.exports = router
