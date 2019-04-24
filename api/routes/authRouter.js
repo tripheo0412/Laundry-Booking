@@ -1,5 +1,6 @@
 require("dotenv").config()
 const express = require("express")
+const bp = require("body-parser")
 const router = express.Router()
 const jwt = require("jsonwebtoken")
 const userController = require("../controllers/userController")
@@ -7,8 +8,10 @@ const bcrypt = require("bcrypt")
 const User = require("../models/users")
 require('dotenv').config();
 const secret = process.env.SECRET
+router.use(bp.urlencoded({extended: false}))
 //POST login
 router.post("/login", (req, res) => {
+  console.log("body login ",req.body)
   const email = req.body.email
   const password = req.body.password
   userController.user_find_one_email(email).then(user => {
@@ -40,23 +43,7 @@ router.post("/login", (req, res) => {
 
 //POST Register
 router.post("/register", (req, res) => {
-  const { name, email, password, password2, avatarUrl } = req.body
-  let errors = []
-
-  if (!name || !email || !password || !password2) {
-    errors.push({ msg: "Please enter all fields" })
-  }
-
-  if (password != password2) {
-    errors.push({ msg: "Passwords do not match" })
-  }
-
-  if (password.length < 6) {
-    errors.push({ msg: "Password must be at least 6 characters" })
-  }
-  if (errors.length > 0) {
-    res.send(errors)
-  } else {
+    console.log("this is api data ",req.body)
       userController.user_find_one_email(req.body.email)
         .then(user => {
           if (user) {
@@ -66,8 +53,7 @@ router.post("/register", (req, res) => {
             const newUser = new User({
               name: req.body.name,
               email: req.body.email,
-              password: req.body.password,
-              avatar: avatarUrl
+              password: req.body.password
             })
             bcrypt.genSalt(12, (err, salt) => {
               if (err) throw err
@@ -85,7 +71,7 @@ router.post("/register", (req, res) => {
         .catch(err => {
           res.send(err)
         })
-  }
+  
 })
 
 module.exports = router
