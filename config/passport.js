@@ -1,4 +1,7 @@
 const passportJWT = require("passport-jwt")
+const jwtDecode = require("jwt-decode")
+const passportCookie = require("passport-cookie")
+const CookieStrategy = passportCookie.Strategy
 const JWTStrategy = passportJWT.Strategy
 const ExtractJWT = passportJWT.ExtractJwt
 const userController = require("../controllers/userController")
@@ -24,5 +27,21 @@ module.exports = passport => {
           })
       }
     )
+  )
+}
+
+module.exports = passport => {
+  passport.use(
+    new CookieStrategy((token, cb) => {
+      const data = jwtDecode(token)
+      return userController
+        .user_find_one_id(data)
+        .then(user => {
+          return cb(null, user)
+        })
+        .catch(err => {
+          return cb(err)
+        })
+    })
   )
 }
