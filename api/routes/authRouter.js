@@ -43,7 +43,6 @@ router.post("/login", (req, res) => {
 
 //POST Register
 router.post("/register", (req, res) => {
-    console.log("this is api data ",req.body)
       userController.user_find_one_email(req.body.email)
         .then(user => {
           if (user) {
