@@ -6,7 +6,7 @@ const bp = require("body-parser")
 const passport = require("passport")
 const userRouter = require("./api/routes/userRouter")
 const authRouter = require("./api/routes/authRouter")
-const path =require('path')
+const path = require("path")
 mongoose
   .connect(
     `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${
@@ -18,17 +18,17 @@ mongoose
   .catch(err => console.log(err))
 
 const app = express()
+app.use(bp.json())
+app.use(bp.urlencoded({ extended: false }))
 app.use(passport.initialize())
 require("./api/config/passport")(passport)
 
-app.use(cp())
-app.use(bp.urlencoded({extended: false}))
-app.use(bp.json())
-app.use(express.static('public'))
+
+app.use(express.static("public"))
 
 app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname + '/public/SignIn.html'))
+  res.sendFile(path.join(__dirname + "/public/SignIn.html"))
 })
-app.use('/user',passport.authenticate('jwt',{session:false}),userRouter)
-app.use('/auth',authRouter)
+app.use("/user", passport.authenticate("jwt", { session: false }), userRouter)
+app.use("/auth", authRouter)
 app.listen(3000)

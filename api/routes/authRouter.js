@@ -1,17 +1,17 @@
 require("dotenv").config()
 const express = require("express")
-const bp = require("body-parser")
 const router = express.Router()
+const bp = require("body-parser")
 const jwt = require("jsonwebtoken")
 const userController = require("../controllers/userController")
 const bcrypt = require("bcrypt")
 const User = require("../models/users")
 require('dotenv').config();
 const secret = process.env.SECRET
-router.use(bp.urlencoded({extended: false}))
+
 //POST login
 router.post("/login", (req, res) => {
-  console.log("body login ",req.body)
+  console.log("body login ",req.body, '  ', req.body.email,req.body.password)
   const email = req.body.email
   const password = req.body.password
   userController.user_find_one_email(email).then(user => {
