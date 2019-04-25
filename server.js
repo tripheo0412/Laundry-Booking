@@ -6,6 +6,8 @@ const bp = require("body-parser")
 const passport = require("passport")
 const userRouter = require("./api/routes/userRouter")
 const authRouter = require("./api/routes/authRouter")
+const bookingRouter = require("./api/routes/bookingRouter")
+const messageRouter = require("./api/routes/messageRouter")
 const path = require("path")
 mongoose
   .connect(
@@ -26,9 +28,15 @@ require("./api/config/passport")(passport)
 
 app.use(express.static("public"))
 
-app.get("/*", (req, res) => {
+app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname + "/public/SignIn.html"))
 })
+app.post("/test",(res,req) => {
+  console.log(req.body)
+  res.send(ok)
+})
 app.use("/user", passport.authenticate("jwt", { session: false }), userRouter)
+app.use("/booking", bookingRouter)
+app.use("/messages", messageRouter)
 app.use("/auth", authRouter)
 app.listen(3000)
