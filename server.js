@@ -47,7 +47,7 @@ app.use(
 )
 app.use(
   "/messages/",
-
+  passport.authenticate("cookie", { session: false }),
   messageRouter
 )
 app.use("/auth", authRouter)

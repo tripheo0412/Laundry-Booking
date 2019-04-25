@@ -18,6 +18,7 @@ router.post("/login", upload.none(), (req, res) => {
     if (!user) {
       return res.send("no account found")
     }
+    const username = user.name
     bcrypt.compare(password, user.password).then(isMatch => {
       if (isMatch) {
         const payload = {
@@ -30,7 +31,8 @@ router.post("/login", upload.none(), (req, res) => {
           }
           res.json({
             success: true,
-            token: token
+            token: token,
+            user: username
           })
         })
       } else {

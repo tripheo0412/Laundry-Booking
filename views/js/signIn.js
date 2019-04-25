@@ -57,6 +57,7 @@ document.querySelector("#signInForm").addEventListener("submit", evt => {
         .json()
         .then(data => {
           document.cookie=`token=${data.token}`
+          localStorage.setItem('user',data.user)
           window.location.href = "http://localhost:3000/booking"
         })
       .catch(err => {

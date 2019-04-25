@@ -1,7 +1,8 @@
 var socket = io()
+var username = localStorage.getItem('user')
 $(() => {
   $("#send").click(() => {
-    sendMessage({ name: $("#name").val(), message: $("#message").val() })
+    sendMessage({ name: username, message: $("#message").val() })
   })
 
   getMessages()
