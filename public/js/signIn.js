@@ -1,17 +1,62 @@
-document.querySelector('#signInForm').addEventListener('submit', (e) => {
-    e.preventDefault()
-    const formData = new FormData(e.target)
-    // Now you can use formData.get('foo'), for example.
-    // Don't forget e.preventDefault() if you want to stop normal form .submission
-    const url = "http://localhost:3000/test"
-    fetch(url,{
-        method:"POST",
-        headers: {
-            "Content-Type":"application/x-www-form-urlencoded",
-        },
-        body: formData
-    }).then(res => {
-        res.json()
-        console.log(res)
+const serialize = form => {
+  // Setup our serialized data
+  var serialized = []
+
+  // Loop through each field in the form
+  for (var i = 0; i < form.elements.length; i++) {
+    var field = form.elements[i]
+
+    // Don't serialize fields without a name, submits, buttons, file and reset inputs, and disabled fields
+    if (
+      !field.name ||
+      field.disabled ||
+      field.type === "file" ||
+      field.type === "reset" ||
+      field.type === "submit" ||
+      field.type === "button"
+    )
+      continue
+
+    // If a multi-select, get all selections
+    if (field.type === "select-multiple") {
+      for (var n = 0; n < field.options.length; n++) {
+        if (!field.options[n].selected) continue
+        serialized.push(
+          encodeURIComponent(field.name) +
+            "=" +
+            encodeURIComponent(field.options[n].value)
+        )
+      }
+    }
+
+    // Convert field data to a query string
+    else if (
+      (field.type !== "checkbox" && field.type !== "radio") ||
+      field.checked
+    ) {
+      serialized.push(
+        encodeURIComponent(field.name) + "=" + encodeURIComponent(field.value)
+      )
+    }
+  }
+
+  return serialized.join("&")
+}
+
+document.querySelector("#signInForm").addEventListener("submit", evt => {
+  evt.preventDefault()
+  const data = new FormData(evt.target)
+  const url = "/auth/login"
+  fetch(url, {
+    method: "POST",
+    body: data
+  })
+    .then(resp => {
+      resp.json().then(data => {
+        localStorage.setItem('token',data.token)
+      })
+    })
+    .catch(err => {
+      console.log(err)
     })
 })

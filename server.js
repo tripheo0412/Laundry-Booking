@@ -20,8 +20,9 @@ mongoose
   .catch(err => console.log(err))
 
 const app = express()
-app.use(bp.json())
-app.use(bp.urlencoded({ extended: false }))
+
+// app.use(bp.json())
+// app.use(bp.urlencoded({ extended: false }))
 app.use(passport.initialize())
 require("./api/config/passport")(passport)
 
@@ -30,10 +31,6 @@ app.use(express.static("public"))
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname + "/public/SignIn.html"))
-})
-app.post("/test",(res,req) => {
-  console.log(req.body)
-  res.send(ok)
 })
 app.use("/user", passport.authenticate("jwt", { session: false }), userRouter)
 app.use("/booking", bookingRouter)

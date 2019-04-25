@@ -1,17 +1,16 @@
 require("dotenv").config()
 const express = require("express")
 const router = express.Router()
-const bp = require("body-parser")
+const multer = require("multer")
 const jwt = require("jsonwebtoken")
 const userController = require("../controllers/userController")
 const bcrypt = require("bcrypt")
 const User = require("../models/users")
 require('dotenv').config();
 const secret = process.env.SECRET
-
+const upload = multer()
 //POST login
-router.post("/login", (req, res) => {
-  console.log("body login ",req.body, '  ', req.body.email,req.body.password)
+router.post("/login",upload.none(), (req, res) => {
   const email = req.body.email
   const password = req.body.password
   userController.user_find_one_email(email).then(user => {
@@ -30,7 +29,7 @@ router.post("/login", (req, res) => {
             res.status(500).json({ error: "Error signing token", raw: err })
           res.json({
             success: true,
-            token: `Bearer ${token}`
+            token: token
           })
         })
       } else {
