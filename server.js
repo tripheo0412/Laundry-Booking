@@ -32,8 +32,8 @@ app.use ((req, res, next) => {
     res.redirect('https://' + req.headers.host + req.url);
   }
 })
-var https = require("https").Server(app)
-var io = require("socket.io")(https)
+var http= require("http").Server(app)
+var io = require("socket.io")(http)
 io.on("connection", socket => {
   console.log("a user is connected")
 })
@@ -72,4 +72,4 @@ app.use(
   messageRouter
 )
 app.use("/auth", authRouter)
-https.listen(3000)
+http.listen(3000)
