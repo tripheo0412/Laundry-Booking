@@ -23,17 +23,17 @@ mongoose
 
 const app = express()
 app.use(helmet({ieNoOpen: false}))
-// app.use ((req, res, next) => {
-//   if (req.secure) {
-//     // request was via https, so do no special handling
-//     next();
-//   } else {
-//     // request was via http, so redirect to https
-//     res.redirect('https://' + req.headers.host + req.url);
-//   }
-// })
-var http = require("http").Server(app)
-var io = require("socket.io")(http)
+app.use ((req, res, next) => {
+  if (req.secure) {
+    // request was via https, so do no special handling
+    next();
+  } else {
+    // request was via http, so redirect to https
+    res.redirect('https://' + req.headers.host + req.url);
+  }
+})
+var https = require("https").Server(app)
+var io = require("socket.io")(https)
 io.on("connection", socket => {
   console.log("a user is connected")
 })
