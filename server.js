@@ -32,8 +32,8 @@ app.use ((req, res, next) => {
     res.redirect('https://' + req.headers.host + req.url);
   }
 })
-var http= require("http").Server(app)
-var io = require("socket.io")(http)
+var https= require("https").Server(app)
+var io = require("socket.io")(https)
 io.on("connection", socket => {
   console.log("a user is connected")
 })
@@ -71,5 +71,8 @@ app.use(
   passport.authenticate("cookie", { session: false }),
   messageRouter
 )
+app.get("/calendar", passport.authenticate("cookie", { session: false }),(req,res)=> {
+  res.render("calendar")
+})
 app.use("/auth", authRouter)
-http.listen(3000)
+https.listen(3000)

@@ -11,6 +11,7 @@
   "author": "Tri Hoang",
   "license": "MIT",
   "dependencies": {
+    "apidoc": "^0.17.7",
     "bcrypt": "^3.0.5",
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.4",
