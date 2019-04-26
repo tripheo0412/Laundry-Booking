@@ -56,13 +56,14 @@ document.querySelector("#signInForm").addEventListener("submit", evt => {
       resp
         .json()
         .then(data => {
-          document.cookie=`token=${data.token}`
-          localStorage.setItem('user',data.user)
+          
+          localStorage.setItem("user", data.user)
+          document.cookie = `token=${data.token}`
           window.location.href = "http://localhost:3000/booking"
         })
-      .catch(err => {
-        console.log(err)
-      })
+        .catch(err => {
+          console.log(err)
+        })
     })
     .catch(err => {
       console.log(err)

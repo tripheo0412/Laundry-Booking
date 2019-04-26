@@ -16,7 +16,8 @@ const UserSchema = new mongoose.Schema({
   date: {
     type: Date,
     default: Date.now
-  }
+  },
+  bookings: { type: mongoose.Schema.ObjectId, ref: "Bookings"}
 })
 
 const Users = mongoose.model('Users', UserSchema)

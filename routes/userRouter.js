@@ -3,10 +3,21 @@ const router = express.Router()
 const userController = require("../controllers/userController")
 
 //Get user information
-router.get("/user", (req, res) => {
-  const { email } = req.body
+router.get("/", (req, res) => {
   userController
-    .user_find_one_email(email)
+    .user_find_all()
+    .then(result => {
+      res.send(result)
+    })
+    .catch(err => {
+      console.log(err)
+      res.send(err)
+    })
+})
+
+router.get("/user", (req, res) => {
+  userController
+    .user_find_one_email(req.body.email)
     .then(result => {
       res.send(result)
     })

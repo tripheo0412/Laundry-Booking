@@ -9,14 +9,49 @@ html
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js', integrity='sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1', crossorigin='anonymous')
     script(src='/socket.io/socket.io.js')
   body
-    .container
-      br
-      .jumbotron
-        h1.display-4 Send Message
-        br
-        textarea#message.form-control(placeholder='Your Message Here')
-        br
+    #booking.section
+      .section-top
+        .navigation
+          a.buttonLogout(href='')
+            img(src='http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png')
+            .logout LOGOUT
+      .section-center
+        .container
+          .row
+            .col-md-7.col-md-push-5
+              .booking-cta
+                h1 Make your laundry booking
+                p Please do not overbooking laundry slot!
+            .col-md-4.col-md-pull-7
+              .booking-form
+                form#bookingForm
+                  .form-group
+                    span.form-label Machine Type
+                    select.form-control
+                      option Washer
+                      option Dryer
+                    span.select-arrow
+                  .form-group
+                    span.form-label Date
+                    input.form-control(type='date', required='', name="date")
+                  .row
+                    .col-sm-6
+                      .form-group
+                        span.form-label Check In
+                        input.form-control(type='time', required='', name="checkIn")
+                    .col-sm-6
+                      .form-group
+                        span.form-label Check out
+                        input.form-control(type='time', required='', name="checkOut")
+                  .form-btn
+                    button.submit-btn(type='submit') Check availability
+    button.open-button(onclick='openForm()') Chat
+    #myForm.chat-popup
+      form.form-container()
+        h1 Chat
+        div(id='messages')
+        textarea#message(placeholder='Type message..', name='msg', required='')
         button#send.btn.btn-success Send
-      #messages
+        button.btn.cancel(type='button', onclick='closeForm()') Close
     script(src='js/message.js')
     script(src='js/booking.js')

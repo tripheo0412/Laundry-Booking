@@ -26,9 +26,9 @@ router.post("/login", upload.none(), (req, res) => {
           name: user.userName
         }
         jwt.sign(payload, secret, { expiresIn: 36000 }, (err, token) => {
-          if (err) {
+          if (err) 
             res.status(500).json({ error: "Error signing token", raw: err })
-          }
+          
           res.json({
             success: true,
             token: token,

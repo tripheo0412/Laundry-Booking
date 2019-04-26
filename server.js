@@ -8,8 +8,9 @@ const userRouter = require("./routes/userRouter")
 const authRouter = require("./routes/authRouter")
 const bookingRouter = require("./routes/bookingRouter")
 const messageRouter = require("./routes/messageRouter")
+const machineRouter = require("./routes/machineRouter")
 const path = require("path")
-const helmet = require('helmet')
+const helmet = require("helmet")
 mongoose
   .connect(
     `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${
@@ -47,14 +48,23 @@ app.set("view engine", "pug")
 app.get("/", (req, res) => {
   res.render("signIn")
 })
-app.get("/signUp", (req,res) => {
-  res.render('signUp')
+app.get("/signUp", (req, res) => {
+  res.render("signUp")
 })
-app.use("/user", passport.authenticate("jwt", { session: false }), userRouter)
+app.use(
+  "/user",
+  passport.authenticate("cookie", { session: false }),
+  userRouter
+)
 app.use(
   "/booking",
   passport.authenticate("cookie", { session: false }),
   bookingRouter
+)
+app.use(
+  "/machine",
+  passport.authenticate("cookie", { session: false }),
+  machineRouter
 )
 app.use(
   "/messages/",
