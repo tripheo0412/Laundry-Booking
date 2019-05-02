@@ -32,7 +32,8 @@ const app = express()
 //     res.redirect('https://' + req.headers.host + req.url);
 //   }
 // })
-const io = require("socket.io")(app)
+const http = require("http").createServer(app)
+const io = require("socket.io")(http)
 io.on('connection', (socket) => {
   console.log('Client connected');
   socket.on('disconnect', () => console.log('Client disconnected'));
@@ -75,4 +76,4 @@ app.get("/calendar", passport.authenticate("cookie", { session: false }),(req,re
   res.render("calendar")
 })
 app.use("/auth", authRouter)
-app.listen(process.env.PORT || 3000)
+http.listen(process.env.PORT || 3000)
