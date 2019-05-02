@@ -72,7 +72,7 @@ app.use(
   passport.authenticate("cookie", { session: false }),
   messageRouter
 )
-app.get("/calendar", passport.authenticate("cookie", { session: false }),(req,res)=> {
+app.get("/calendar", (req,res)=> {
   res.render("calendar")
 })
 app.use("/auth", authRouter)
