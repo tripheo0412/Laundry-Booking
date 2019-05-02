@@ -75,4 +75,4 @@ app.get("/calendar", passport.authenticate("cookie", { session: false }),(req,re
   res.render("calendar")
 })
 app.use("/auth", authRouter)
-app.listen(3000)
+app.listen(process.env.PORT || 3000)
