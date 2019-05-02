@@ -270,3 +270,9 @@ div#message {
   height: 300px;
   overflow: scroll;
 }
+
+#calendar {
+  background-color: white;
+  border-radius: 4px;
+  border: none;
+}
