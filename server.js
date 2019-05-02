@@ -22,16 +22,16 @@ mongoose
   .catch(err => console.log(err))
 
 const app = express()
-app.use(helmet({ieNoOpen: false}))
-app.use ((req, res, next) => {
-  if (req.secure) {
-    // request was via https, so do no special handling
-    next();
-  } else {
-    // request was via http, so redirect to https
-    res.redirect('https://' + req.headers.host + req.url);
-  }
-})
+// app.use(helmet({ieNoOpen: false}))
+// app.use ((req, res, next) => {
+//   if (req.secure) {
+//     // request was via https, so do no special handling
+//     next();
+//   } else {
+//     // request was via http, so redirect to https
+//     res.redirect('https://' + req.headers.host + req.url);
+//   }
+// })
 var http= require("http").Server(app)
 var io = require("socket.io")(http)
 io.on("connection", socket => {
