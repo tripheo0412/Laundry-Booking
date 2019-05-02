@@ -59,7 +59,7 @@ document.querySelector("#signInForm").addEventListener("submit", evt => {
           
           localStorage.setItem("user", data.user)
           document.cookie = `token=${data.token}`
-          window.location.href = "http://localhost:3000/booking"
+          window.location.href = "/booking"
         })
         .catch(err => {
           console.log(err)
