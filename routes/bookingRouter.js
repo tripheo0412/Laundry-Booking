@@ -20,12 +20,11 @@ router.post("/new", upload.none(), (req, res) => {
   }
   const userId = userController.user_find_one_name(req.body.username).id
   console.log(userId)
-
   const newBooking = new Booking({
     user: userId,
     bookingDate: req.body.date,
-    startHour: Date(req.body.checkIn),
-    endHour: Date(req.body.checkOut),
+    startHour: req.body.checkIn,
+    endHour: req.body.checkOut,
     machineId: machineid
   })
   newBooking
@@ -33,6 +32,19 @@ router.post("/new", upload.none(), (req, res) => {
     .then(booking => {
       console.log("booking ", booking)
       res.send(booking)
+    })
+    .catch(err => {
+      console.log(err)
+      res.sendStatus(500)
+    })
+})
+
+router.get("/all", (req, res) => {
+  bookingController
+    .bookings_get_all()
+    .then(bookings => {
+      console.log(bookings)
+      res.send(bookings)
     })
     .catch(err => {
       console.log(err)
