@@ -29,9 +29,9 @@ const generateEvents = () => {
           }
           console.log(booking.machineId)
           if (booking.machineId == "5cc2851ae95eb31632461722") {
-            smallResult.title = "Washer"
+            smallResult.title = `Washer-${booking.username}`
           } else {
-            smallResult.title = "Dryer"
+            smallResult.title = `Dryer-${booking.username}`
           }
           smallResult.start = `${booking.bookingDate}T${booking.startHour}:00`
           smallResult.end = `${booking.bookingDate}T${booking.endHour}:00`
