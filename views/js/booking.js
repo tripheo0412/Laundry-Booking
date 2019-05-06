@@ -9,6 +9,7 @@ const closeForm = () => {
 document.querySelector("#bookingForm").addEventListener("submit", evt => {
     evt.preventDefault()
     const data = new FormData(evt.target)
+    data.append("username", localStorage.getItem("user"))
     const url = "/booking/new"
     console.log(data.values)
     fetch(url, {

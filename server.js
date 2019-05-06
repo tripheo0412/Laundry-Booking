@@ -72,8 +72,5 @@ app.use(
   passport.authenticate("cookie", { session: false }),
   messageRouter
 )
-app.get("/calendar", (req,res)=> {
-  res.render("calendar")
-})
 app.use("/auth", authRouter)
 http.listen(process.env.PORT || 3000)

@@ -1,12 +1,28 @@
 var result = []
+var config = {
+  plugins: ["interaction", "dayGrid", "timeGrid", "list"],
+  height: "parent",
+  header: {
+    left: "prev,next today",
+    center: "title",
+    right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
+  },
+  defaultView: "timeGridWeek",
+  //defaultDate: "2019-05-03",
+  navLinks: true, // can click day/week names to navigate views
+  editable: true,
+  eventLimit: true, // allow "more" link when too many events
+  events: []
+  
+}
 const generateEvents = () => {
   const url = "/booking/all"
   fetch(url, {
     method: "GET"
   })
     .then(resp =>
-      resp.json().then(data => {
-        data.forEach(booking => {
+      resp.json().then(async data => {
+        await data.forEach((booking, i = 1) => {
           var smallResult = {
             title: String,
             start: String,
@@ -19,36 +35,24 @@ const generateEvents = () => {
           }
           smallResult.start = `${booking.bookingDate}T${booking.startHour}:00`
           smallResult.end = `${booking.bookingDate}T${booking.endHour}:00`
-          result.push(smallResult)
+          console.log(i)
+          config.events[i] = smallResult
         })
-        console.log(result)
+        var calendarEl = await document.getElementById("calendar")
+        var calendar = await new FullCalendar.Calendar(calendarEl, config)
+        await calendar.render()
       })
     )
     .catch(err => {
       console.log(err)
     })
 }
-document.addEventListener("DOMContentLoaded", () => {
-  var calendarEl = document.getElementById("calendar")
-  var calendar = new FullCalendar.Calendar(calendarEl, {
-    plugins: ["interaction", "dayGrid", "timeGrid", "list"],
-    height: "parent",
-    header: {
-      left: "prev,next today",
-      center: "title",
-      right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
-    },
-    defaultView: "timeGridWeek",
-    //defaultDate: "2019-05-03",
-    navLinks: true, // can click day/week names to navigate views
-    editable: true,
-    eventLimit: true, // allow "more" link when too many events
-    events: []
-  })
+generateEvents()
+// document.addEventListener("DOMContentLoaded", async () => {
+//   await generateEvents()
 
-  // generateEvents().then(() => {
-  //   calendar.events = result
-  // })
-
-  calendar.render()
-})
+//   console.log(config)
+//   var calendarEl = await document.getElementById("calendar")
+//   var calendar = await new FullCalendar.Calendar(calendarEl, config)
+//   calendar.render()
+// })

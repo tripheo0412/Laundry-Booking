@@ -13,14 +13,15 @@ router.get("/", (req, res) => {
   res.render("booking.pug")
 })
 
-router.post("/new", upload.none(), (req, res) => {
+router.post("/new", upload.none(), async (req, res) => {
   var machineid
   if (req.body.type == "washer") {
     machineid = "5cc2851ae95eb31632461722"
   } else {
     machineid = "5cc283c25b6cbe15c45fa693"
   }
-  const userId = userController.user_find_one_name(req.body.username).id
+  const userId = await userController.user_find_one_name(req.body.username).id
+  console.log("this is userid: ",userId)
   const newBooking = new Booking({
     user: userId,
     bookingDate: req.body.date,

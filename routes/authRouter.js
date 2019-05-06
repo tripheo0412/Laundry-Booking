@@ -16,7 +16,8 @@ router.post("/login", upload.none(), (req, res) => {
   const password = req.body.password
   userController.user_find_one_email(email).then(user => {
     if (!user) {
-      return res.send("no account found")
+      const response = "Invalid email or password"
+      return res.send(response)
     }
     const username = user.name
     bcrypt.compare(password, user.password).then(isMatch => {
@@ -26,9 +27,9 @@ router.post("/login", upload.none(), (req, res) => {
           name: user.userName
         }
         jwt.sign(payload, secret, { expiresIn: 36000 }, (err, token) => {
-          if (err) 
+          if (err)
             res.status(500).json({ error: "Error signing token", raw: err })
-          
+
           res.json({
             success: true,
             token: token,
@@ -36,7 +37,8 @@ router.post("/login", upload.none(), (req, res) => {
           })
         })
       } else {
-        res.send("Password is incorrect")
+        const response = "Invalid email or password"
+        res.send(response)
       }
     })
   })
@@ -49,8 +51,12 @@ router.post("/register", (req, res) => {
     .then(user => {
       if (user) {
         let error = "Email Address Exists in Database."
-        return res.status(400).json(error)
+        return res.send(error)
       } else {
+        if (req.body.password != req.body.password2) {
+          let error = "Password mismatch!"
+          return res.send(error)
+        }
         const newUser = new User({
           name: req.body.name,
           email: req.body.email,

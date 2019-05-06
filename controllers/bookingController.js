@@ -21,10 +21,9 @@ exports.booking_create_new = data => {
 }
 
 exports.booking_find_machineId = id => {
-  return Booking
-    .find({
-      machineId: id
-    })
+  return Booking.find({
+    machineId: id
+  })
     .then(machine => {
       return machine
     })
@@ -32,3 +31,4 @@ exports.booking_find_machineId = id => {
       return err
     })
 }
+
