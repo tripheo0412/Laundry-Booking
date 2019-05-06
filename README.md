@@ -2,8 +2,8 @@
 <br>
 A Full Stack Laundry Booking Service 
 <br>
-# List of API used
-----------------
+## List of API used
+
 
 #### Auth API
 
