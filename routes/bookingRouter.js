@@ -14,7 +14,6 @@ router.get("/", (req, res) => {
 })
 
 router.post("/new", upload.none(), (req, res) => {
-  console.log(req.body)
   var machineid
   if (req.body.type == "washer") {
     machineid = "5cc2851ae95eb31632461722"
@@ -22,7 +21,6 @@ router.post("/new", upload.none(), (req, res) => {
     machineid = "5cc283c25b6cbe15c45fa693"
   }
   const userId = userController.user_find_one_name(req.body.username).id
-  console.log(userId)
   const newBooking = new Booking({
     user: userId,
     bookingDate: req.body.date,
@@ -83,8 +81,7 @@ router.post("/new", upload.none(), (req, res) => {
           res.send(booking)
         })
         .catch(err => {
-          console.log(err)
-          res.sendStatus(500)
+          res.send(err)
         })
     }
   })
@@ -94,12 +91,10 @@ router.get("/all", (req, res) => {
   bookingController
     .bookings_get_all()
     .then(bookings => {
-      console.log(bookings)
       res.send(bookings)
     })
     .catch(err => {
-      console.log(err)
-      res.sendStatus(500)
+      res.send(err)
     })
 })
 
