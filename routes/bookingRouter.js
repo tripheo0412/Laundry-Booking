@@ -1,3 +1,4 @@
+"use strict"
 const express = require("express")
 const router = express.Router()
 const multer = require("multer")
@@ -15,15 +16,13 @@ router.get("/", (req, res) => {
 
 router.post("/new", upload.none(), async (req, res) => {
   var machineid
-  if (req.body.type == "washer") {
+  if (req.body.type == "Washer") {
     machineid = "5cc2851ae95eb31632461722"
   } else {
     machineid = "5cc283c25b6cbe15c45fa693"
   }
-  const userId = await userController.user_find_one_name(req.body.username).id
-  console.log("this is userid: ",userId)
   const newBooking = new Booking({
-    user: userId,
+    username: req.body.username,
     bookingDate: req.body.date,
     startHour: req.body.checkIn,
     endHour: req.body.checkOut,
@@ -71,14 +70,12 @@ router.post("/new", upload.none(), async (req, res) => {
       }
     })
     if (overlap) {
-      console.log("Booking overlapped")
       res.send(true)
 
     } else {
       newBooking
         .save()
         .then(booking => {
-          console.log("booking ", booking)
           res.send(booking)
         })
         .catch(err => {

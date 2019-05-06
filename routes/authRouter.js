@@ -1,3 +1,4 @@
+"use strict"
 require("dotenv").config()
 const express = require("express")
 const router = express.Router()
@@ -69,7 +70,7 @@ router.post("/register", (req, res) => {
             newUser.password = hash
             newUser
               .save()
-              .then(user => res.render("signIn"))
+              .then(() => res.redirect("/"))
               .catch(err => res.status(400).json(err))
           })
         })

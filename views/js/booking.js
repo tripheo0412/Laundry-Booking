@@ -11,7 +11,6 @@ document.querySelector("#bookingForm").addEventListener("submit", evt => {
   const data = new FormData(evt.target)
   data.append("username", localStorage.getItem("user"))
   const url = "/booking/new"
-  console.log(data.values)
   fetch(url, {
     method: "POST",
     body: data

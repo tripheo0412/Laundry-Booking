@@ -1,3 +1,4 @@
+"use strict"
 const express = require("express")
 const router = express.Router()
 const userController = require("../controllers/userController")
@@ -10,7 +11,6 @@ router.get("/", (req, res) => {
       res.send(result)
     })
     .catch(err => {
-      console.log(err)
       res.send(err)
     })
 })
@@ -22,7 +22,6 @@ router.get("/user", (req, res) => {
       res.send(result)
     })
     .catch(err => {
-      console.log(err)
       res.send(err)
     })
 })

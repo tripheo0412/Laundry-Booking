@@ -6,7 +6,7 @@ const BookingSchema  = new mongoose.Schema({
   startHour: String,
   endHour:String,
   machineId: { type: mongoose.Schema.ObjectId, ref: "Machines"},
-  userId: { type: mongoose.Schema.ObjectId, ref: "Users"}
+  username: String
 })
 
 const Bookings = mongoose.model('Bookings',BookingSchema)

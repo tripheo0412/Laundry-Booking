@@ -27,6 +27,7 @@ const generateEvents = () => {
             start: String,
             end: String
           }
+          console.log(booking.machineId)
           if (booking.machineId == "5cc2851ae95eb31632461722") {
             smallResult.title = "Washer"
           } else {
