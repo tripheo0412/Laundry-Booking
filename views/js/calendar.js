@@ -1,4 +1,3 @@
-var result = []
 var config = {
   plugins: ["interaction", "dayGrid", "timeGrid", "list"],
   height: "parent",
@@ -48,11 +47,3 @@ const generateEvents = () => {
     })
 }
 generateEvents()
-// document.addEventListener("DOMContentLoaded", async () => {
-//   await generateEvents()
-
-//   console.log(config)
-//   var calendarEl = await document.getElementById("calendar")
-//   var calendar = await new FullCalendar.Calendar(calendarEl, config)
-//   calendar.render()
-// })
