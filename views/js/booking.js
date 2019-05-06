@@ -16,7 +16,7 @@ document.querySelector("#bookingForm").addEventListener("submit", evt => {
       body: data
     })
       .then(resp => {
-        console.log(resp)
+        resp.json().then(data => {if (data === true) {alert("Booking overlapped !")} else {alert("Booking confirmed")}})
         
       })
       .catch(err => {

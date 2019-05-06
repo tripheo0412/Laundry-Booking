@@ -19,3 +19,16 @@ exports.booking_create_new = data => {
       return err
     })
 }
+
+exports.booking_find_machineId = id => {
+  return Booking
+    .find({
+      machineId: id
+    })
+    .then(machine => {
+      return machine
+    })
+    .catch(err => {
+      return err
+    })
+}

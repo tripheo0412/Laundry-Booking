@@ -6,11 +6,9 @@ exports.user_find_one_email = email => {
       email: email
     })
     .then(user => {
-      console.log("user find one email ", user)
       return user
     })
     .catch(err => {
-      console.log("user find one email error ", err)
       return err
     })
 }
@@ -21,11 +19,9 @@ exports.user_find_one_name = name => {
         name: name
       })
       .then(user => {
-        console.log("user find one name ", user)
         return user
       })
       .catch(err => {
-        console.log("user find one name error ", err)
         return err
       })
   }

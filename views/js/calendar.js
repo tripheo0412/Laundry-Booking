@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
       right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
     },
     defaultView: "timeGridWeek",
-    defaultDate: "2019-05-03",
+    //defaultDate: "2019-05-03",
     navLinks: true, // can click day/week names to navigate views
     editable: true,
     eventLimit: true, // allow "more" link when too many events
